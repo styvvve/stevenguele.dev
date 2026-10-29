@@ -1,0 +1,79 @@
+---
+import Button from './Button.astro'; 
+
+const currentPath = Astro.url.pathname; 
+
+const links = [
+    { href: "/", label: "Home" }, 
+    { href: "/projects", label: "Projects"}, 
+    { href: "/blog", label: "Blog" }, 
+    { href: "/about", label: "About" },
+]; 
+---
+
+<header>
+    <div class="container">
+            <a href="/" class="logo">stevenguele<span class="some">.dev</span></a>
+         <nav>
+            {links.map((link) => (
+                <a 
+                    href={link.href}
+                    aria-current={currentPath === link.href ? "page" : undefined}
+                    >
+                        {link.label}
+                    </a>
+            ))}
+            <Button variant="ghost" href="/cv.pdf" download>CV ↓</Button>
+        </nav>
+    </div>
+</header>
+
+<style>
+
+    header {
+        border-bottom: 1px solid var(--border); 
+    }
+
+    .container {
+        min-height: 3.25rem; 
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-family: var(--font-jetbrains-mono);
+        font-weight: bold;
+        font-size: 1.1rem; 
+        color: var(--text); 
+    }
+
+    a {
+        text-decoration: none;
+        font-family: var(--font-inter);
+    }
+
+    .some {
+        color: var(--accent); 
+    }
+
+    nav {
+        display: flex; 
+        align-items: center;
+        gap: 1.5rem; 
+    }
+
+    nav a {
+        color: var(--muted); 
+    }
+
+    nav a:hover {
+        color: var(--text); 
+    }
+
+    nav a[aria-current="page"] {
+        color: var(--text); 
+    }
+
+
+</style>

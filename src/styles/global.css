@@ -1,0 +1,73 @@
+:root {
+    --bg: #0B0B0C; 
+    --surface: #131315; 
+    --surface-2: #1A1A1D; 
+    --border: #26262B; 
+
+    --text: #EDEDEF; 
+    --muted: #8E8E96; 
+    --dim: #5E5E66; 
+    --body: #C9C9CF;
+    
+    --accent: #E8A33D; 
+    --on-accent: #141006; 
+
+    --ok: #4ADE80; 
+    --blue: #93C5FD; 
+
+    --dot: rgba(255, 255, 255, 0.07); 
+    --dot-gap: 24px; 
+}
+
+html {
+    font-size: 15px; 
+}
+
+.container {
+    max-width: 760px;
+    margin-inline: auto; 
+    padding-inline: 20px;
+}
+
+body {
+    display: flex; 
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bg); 
+    color: var(--text); 
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px); 
+    background-size: var(--dot-gap) var(--dot-gap); 
+    background-attachment: fixed;
+    margin: 0; 
+    font-family: var(--font-inter); 
+}
+
+/*Animation*/
+body::after {
+    content: ""; 
+    position: fixed; 
+    inset: 0; 
+    z-index: -1; 
+    pointer-events: none;
+    background-image: radial-gradient(rgba(232, 163, 61, 0.55) 1px, transparent 1px);
+    background-size: var(--dot-gap) var(--dot-gap); 
+    mask-image: radial-gradient(200px circle at var(--mx, -999px) var(--my, -999px), #000, transparent 70%); 
+    opacity: 0; 
+    transition: opacity .3s;  
+}
+body.has-pointer::after { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    body::after {
+        display: none; 
+    }
+
+    *, *::before, *::after {
+        transition: none !important; 
+        animation: none !important; 
+    }
+}
+
+main {
+    flex: 1; 
+}

@@ -1,0 +1,34 @@
+---
+type Variant = "primary" | "ghost"; 
+
+interface Props {
+    variant: Variant; 
+    href?: string; 
+    download?: boolean; 
+}
+
+const { variant, ...rest } = Astro.props; 
+---
+
+<a {...rest} class:list={["button", variant]}>
+    <slot /> 
+</a>
+
+<style>
+    .button {
+        display: inline-block; 
+        padding: 0.6rem 1rem; 
+        border-radius: 0.5rem; 
+        text-decoration: none;
+    }
+
+    .ghost {
+        border: 1px solid var(--border); 
+        color: var(--text); 
+    }
+
+    .primary {
+        background: var(--accent); 
+        color: var(--on-accent)
+    }
+</style>

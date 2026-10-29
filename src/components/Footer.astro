@@ -1,0 +1,56 @@
+---
+const year = new Date().getFullYear(); 
+
+const links = [
+    { href: "https://github.com/styvvve", label: "Github" }, 
+    { href: "https://www.linkedin.com/in/steve-nguele/", label: "LinkedIn"}, 
+    { href: "/", label: "rss"},
+]
+---
+
+<footer>
+    <div class="container">
+        <p>
+            © {year} Steve Nguele • built with Astro 
+        </p>
+        <div class="social-links">
+            {links.map((link, index) => (
+            <>
+            <a href={link.href} target="_blank" rel="noopener">
+                {link.label}
+            </a>
+            {index < links.length - 1 && <span> • </span>}
+            </>
+        ))}
+        </div>
+    </div>
+</footer>
+
+<style>
+    footer {
+        border-top: 1px solid var(--border); 
+        font-family: var(--font-jetbrains-mono);
+        font-size: 0.8rem; 
+        color: var(--dim); 
+    }
+
+    .container {
+        min-height: 3.25rem; 
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--muted); 
+    }
+
+    a:hover {
+        color: var(--text); 
+    }
+
+    p {
+        margin: 0; 
+    }
+</style>

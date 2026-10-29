@@ -17,8 +17,12 @@ pnpm-debug.log*
 .env
 .env.production
 
-# macOS-specific files
+
 .DS_Store
+.vscode
 
 # jetbrains setting folder
 .idea/
+
+#secret
+public/cv.pdf
