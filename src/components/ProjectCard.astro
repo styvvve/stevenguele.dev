@@ -1,0 +1,95 @@
+---
+import Badge from './Badge.astro'; 
+import Tag from './Tag.astro'; 
+
+
+interface Props {
+  title: string;
+  description: string;
+  tags: string[];
+  links: { label: string; href: string }[];
+  meta?: string;
+  badge?: string;
+}
+
+const { title, description, tags, links, meta, badge } = Astro.props; 
+---
+
+<article class="card">
+    <div class="top">
+        <h3>{title}</h3>
+
+        {badge ? <Badge>{badge}</Badge> : meta && <span class="meta">{meta}</span>}
+    </div>
+
+    <p class="description">{description}</p>
+
+    <div class="bottom">
+        <span class="tags">{tags.map(t => <Tag>{t}</Tag>)}</span>
+        <span class="links">{links.map(l => <a href={l.href}><span class="arrow" aria-hidden="true">↗</span>{l.label}</a>)}</span>
+    </div>
+</article>
+
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px; 
+        padding: 22px 24px;
+        background: var(--surface); 
+        border: 1px solid var(--border); 
+        border-radius: 12px; 
+    }
+
+    .top, 
+    .bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    h3 {
+        margin: 0; 
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .meta {
+        font-family: var(--font-jetbrains-mono);
+        font-size: 12px;
+        color: var(--dim); 
+    }
+
+    .description {
+        margin: 0; 
+        font-size: 14.5px; 
+        line-height: 1.6;
+        color: var(--muted); 
+    }
+
+    .tags {
+        display: flex;
+        gap: 6px; 
+        flex-wrap: wrap;
+    }
+
+    .links {
+        display: flex;
+        gap: 16px; 
+        font-family: var(--font-jetbrains-mono);
+        font-size: 12.5px;
+    }
+
+    .links a {
+        display: inline-flex;
+        color: var(--text); 
+        text-decoration: none;
+        gap: 4px; 
+    }
+
+    .arrow {
+        color: var(--accent); 
+    }
+</style>
