@@ -2,8 +2,51 @@
 interface Props {
     num: number; 
     title: string; 
+    href?: string; 
+    linkLabel?: string; 
 }
-const { num, title } = Astro.props; 
+const { num, title, href, linkLabel } = Astro.props; 
+
+const numb = String(num).padStart(2, "0"); 
 ---
 
-<h2> n:{num}, titre:{title}</h2>
+<div class="header">
+    <h2><span class="num">{numb}</span>{title}</h2>
+    {href && <a href={href}>{linkLabel}</a>}
+</div>
+
+<style>
+    .header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+    }
+
+    h2 {
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+        margin: 0; 
+        font-size: 22px; 
+        font-weight: 600; 
+        letter-spacing: -0.3px;
+    }
+
+    .num {
+        font-family: var(--font-jetbrains-mono);
+        font-size: 13px; 
+        font-weight: 400; 
+        color: var(--accent); 
+    }
+
+    a {
+        font-family: var(--font-jetbrains-mono);
+        font-size: 13px;
+        color: var(--muted); 
+        text-decoration: none; 
+    }
+
+    a:hover {
+        color: var(--text);
+    }
+</style>

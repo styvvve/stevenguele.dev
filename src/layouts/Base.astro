@@ -7,7 +7,7 @@ import { Font } from "astro:assets";
 
 interface Props {
 	title: string; 
-	description: string; 
+	description?: string; 
 }
 
 const { title, description = "Steve NGUELE's website" } = Astro.props; 
@@ -17,7 +17,7 @@ const { title, description = "Steve NGUELE's website" } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width", initial-scale=1 />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
@@ -27,20 +27,6 @@ const { title, description = "Steve NGUELE's website" } = Astro.props;
 		<title>{title}</title>
 	</head>
 
-	<script>
-		const fine = matchMedia('(hover: hover) and (pointer: fine)').matches; 
-		const calm = matchMedia('(prefers-reduced-motion: reduce)').matches; 
-
-		if (fine && !calm) {
-			const root = document.documentElement; 
-			addEventListener('pointermove', (e) => {
-				root.style.setProperty('--mx', e.clientX + 'px'); 
-				root.style.setProperty('--my', e.clientY + 'px'); 
-				document.body.classList.add('has-pointer'); 
-			}, { passive: true }); 
-			document.addEventListener('mouseleave', () => document.body.classList.remove('has-pointer')); 
-		}
-	</script>
 	<body>
 		<Nav />
 
@@ -49,5 +35,20 @@ const { title, description = "Steve NGUELE's website" } = Astro.props;
 		</main>
 
 		<Footer />
+
+		<script>
+			const fine = matchMedia('(hover: hover) and (pointer: fine)').matches; 
+			const calm = matchMedia('(prefers-reduced-motion: reduce)').matches; 
+
+			if (fine && !calm) {
+				const root = document.documentElement; 
+				addEventListener('pointermove', (e) => {
+					root.style.setProperty('--mx', e.clientX + 'px'); 
+					root.style.setProperty('--my', e.clientY + 'px'); 
+					document.body.classList.add('has-pointer'); 
+				}, 	{ passive: true }); 
+				document.addEventListener('mouseleave', () => document.body.classList.remove('has-pointer')); 
+			}
+	</script>
 	</body>
 </html>
