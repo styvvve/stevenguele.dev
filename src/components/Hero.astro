@@ -1,0 +1,110 @@
+---
+import Button from './Button.astro'; 
+---
+
+<section class="hero container">
+    <p class="status"><span class="dot" aria-hidden="true"></span>Seeking a 24-month apprenticeship • Full-stack / Data / AI</p>
+
+    <h1>Steve NGUELE</h1>
+
+    <p class="lead">
+        Between software engineering and artificial intelligence, I design solutions that combine 
+        backend architecture, data processing and intelligent automation.
+        <br />
+        I'm currently in Master's degree at Epitech Bordeaux, I mainly work with Java / Spring Boot & Node.js for my backend. 
+        I'm exploring machine learning, with Python, LLM et agentic architecture too. 
+        <br />
+        Curious of complex systems and their possibilities, I'm always looking to learn, experiment and build.
+    </p>
+
+    <div class="actions">
+        <Button variant="primary" href="/cv.pdf" download>Download my CV</Button>
+        <Button variant="ghost" href="mailto:steve.nguele@epitech.eu">Get in touch →</Button>
+    </div>
+
+    <ul class="socials"> 
+        <li><a href="https://github.com/styvvve">github</a></li>
+        <li><a href="www.linkedin.com/in/steve-nguele">linkedIn</a></li>
+        <li><a href="mailto:steve.nguele@epitech.eu">email</a></li>
+    </ul>
+</section>
+
+<style>
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px; 
+        padding: 96px 0 72px; 
+    }
+
+    .status {
+        display: inline-flex; 
+        align-items: center;
+        gap: 10px; 
+        padding: 7px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border); 
+        border-radius: 999px; 
+        font-family: var(--font-jetbrains-mono); 
+        font-size: 12.5px; 
+        color: var(--text); 
+        margin: 0;
+    }
+
+    .dot {
+        width: 8px; 
+        height: 8px; 
+        border-radius: 50%; 
+        background: var(--ok); 
+        box-shadow: 0 0 0 4px rgb(74, 222, 128 / .15);
+    }
+
+    h1 {
+        font-size: 52px; 
+        font-weight: 700; 
+        line-height: 1.08;
+        letter-spacing: -1.5px;
+        margin: 0; 
+    }
+
+    .accent {
+        color: var(--accent); 
+    }
+
+    .lead strong {
+        color: var(--text); 
+        font-weight: 400; 
+    }
+
+    .actions {
+        display: flex; 
+        gap: 12px; 
+        flex-wrap: wrap; 
+    }
+
+    .socials {
+        display: flex; 
+        gap: 12px; 
+        list-style: none; 
+        padding: 0;
+        margin: 0; 
+        font-family: var(--font-jetbrains-mono); 
+        font-size: 13px; 
+    }
+
+    .socials a {
+        color: var(--muted); 
+        text-decoration: none;
+    }
+
+    .socials a:hover {
+        color: var(--text); 
+    }
+
+    li + li::before {
+        content: "/"; 
+        color: var(--dim); 
+        margin-right: 12px; 
+    }
+</style>

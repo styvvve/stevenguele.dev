@@ -1,28 +1,9 @@
 ---
 import Layout from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro'; 
 
 ---
 
 <Layout title="Steve Nguele • stevenguele.dev" description='Steve Nguele, MsC student at Epitech. I learn about AI and data. I am looking for an apprenticeship of 24 months in AI, data and full stack development. (Java, Spring Boot, Python, C/C++)'>
-
-<section class="hero">
-	<p class="status">
-		<span class="dot" aria-hidden="true"></span>
-		Recherche d'alternance 24 mois · IA/ Data / Backend
-	</p>
-
-	<h1>Steve NGUELE</h1>
-	<p class="lead">
-		Étudiant en Mastère Spécialisé IA à Épitech Bordeaux, après une Licence 
-		Informatique à l'UPPA. Java & Spring Boot côté backend, Python côté 
-		data, et des agents LLM pour automatiser ce qui mérite de l'être.
-	</p>
-</section>
-
+	<Hero />
 </Layout>
-
-<style>
-	.hero {
-		
-	}
-</style>
