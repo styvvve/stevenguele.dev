@@ -1,12 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "../utils/posts";
 import Section from './Section.astro'; 
-import Badge from './Badge.astro'; 
-import Tag from './Tag.astro'; 
+import KindLabel from "./KindLabel.astro";
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-    .slice(0, 3); 
+const posts = (await getPosts()).slice(0, 3);
 ---
 
 <Section num={2} title="Latest posts" href="/blog" linkLabel="Blog →">
@@ -16,9 +13,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <a class="post" href={`/blog/${post.id}`}>
           <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0, 10)}</time>
           <span class="title">{post.data.title}</span>
-          {post.data.kind === 'article' && <Badge variant="blue">article</Badge>}
-          {post.data.kind === 'paper' && <Badge>paper</Badge>}
-          {post.data.kind === 'note' && <Tag>note</Tag>}
+          <KindLabel kind={post.data.kind} />
         </a>
       </li>
     ))}

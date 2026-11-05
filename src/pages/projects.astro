@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SideProjectCard from '../components/SideProjectCard.astro';
+import { projects, sideProjects } from '../data/projects';
+import { GITHUB_URL, SITE_NAME } from '../data/site';
+---
+
+<Layout
+    title={`Projects • ${SITE_NAME}`}
+    description="Projects by Steve Nguele: backends in Java / Spring Boot, data and machine learning in Python, and LLM agents."
+>
+    <div class="container">
+        <PageHeader eyebrow="~/projects" title="Projects">
+            Things I've built at school and on my own. Most of the code is on GitHub.
+        </PageHeader>
+    </div>
+
+    <Section num={1} title="Main projects">
+        <ul class="list">
+            {projects.map((p) => <li><ProjectCard {...p} /></li>)}
+        </ul>
+    </Section>
+
+    <Section num={2} title="Side projects" href={GITHUB_URL} linkLabel="github →">
+        <ul class="grid">
+            {sideProjects.map((p) => <li><SideProjectCard {...p} /></li>)}
+        </ul>
+    </Section>
+</Layout>
+
+<style>
+    .list,
+    .grid {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    @media (max-width: 640px) {
+        .grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

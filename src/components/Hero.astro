@@ -44,7 +44,15 @@ import { CV_URL, GITHUB_URL, LINKEDIN_URL, EMAIL } from '../data/site';
         flex-direction: column;
         align-items: flex-start;
         gap: 24px; 
-        padding: 96px 0 72px; 
+        /* padding-block only: "padding: 96px 0 72px" would reset the
+           horizontal padding of .container and glue the text to the screen edge on mobile */
+        padding-block: 96px 72px;
+    }
+
+    @media (max-width: 640px) {
+        .hero {
+            padding-block: 56px 48px;
+        }
     }
 
     .status {
@@ -70,7 +78,7 @@ import { CV_URL, GITHUB_URL, LINKEDIN_URL, EMAIL } from '../data/site';
     }
 
     h1 {
-        font-size: 52px; 
+        font-size: clamp(2.4rem, 9vw, 52px);
         font-weight: 700; 
         line-height: 1.08;
         letter-spacing: -1.5px;

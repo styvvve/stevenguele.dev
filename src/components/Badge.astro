@@ -1,32 +1,30 @@
 ---
 interface Props {
-    variant?: 'accent' | 'blue'; 
+    variant?: 'accent' | 'blue';
 }
 
-const { variant = 'accent' } = Astro.props; 
+const { variant = 'accent' } = Astro.props;
 ---
 
-<span class="badge"><slot /></span>
+<span class:list={["badge", variant]}><slot /></span>
 
 <style>
     .badge {
         display: inline-block;
         padding: 3px 8px;
         border-radius: 6px;
-        background: rgb(232 163 61 / .12);
         font-family: var(--font-jetbrains-mono);
         font-size: 11px;
-        color: var(--accent);
         white-space: nowrap;
     }
 
     .accent {
-        background: rgb(232 163 61 / .12); 
-        color: var(--accent); 
+        background: rgb(232 163 61 / .12);
+        color: var(--accent);
     }
 
     .blue {
-        background: rgb(147 197 253 / .10); 
-        color: var(--blue); 
+        background: rgb(147 197 253 / .10);
+        color: var(--blue);
     }
 </style>

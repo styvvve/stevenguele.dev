@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import EntryList from '../components/EntryList.astro';
+import SkillGroups from '../components/SkillGroups.astro';
+import FactList from '../components/FactList.astro';
+import Button from '../components/Button.astro';
+import { education, experience, skills, languages } from '../data/about';
+import { CV_URL, EMAIL, SITE_NAME } from '../data/site';
+---
+
+<Layout
+    title={`About • ${SITE_NAME}`}
+    description="About Steve Nguele: MSc in AI at Epitech Bordeaux, BSc in Computer Science, backend and machine learning skills."
+>
+    <div class="container">
+        <PageHeader eyebrow="~/about" title="About">
+            I'm doing a Master's in AI at Epitech Bordeaux, after a Bachelor's in Computer Science
+            at Université de Pau. I build backends in Java / Spring Boot and Node.js, and I'm going
+            deeper into machine learning and LLM agents.
+        </PageHeader>
+    </div>
+
+    <Section num={1} title="Education">
+        <EntryList entries={education} />
+    </Section>
+
+    <Section num={2} title="Experience">
+        <EntryList entries={experience} />
+    </Section>
+
+    <Section num={3} title="Skills">
+        <SkillGroups groups={skills} />
+    </Section>
+
+    <Section num={4} title="Languages">
+        <FactList items={languages} />
+    </Section>
+
+    <div class="container actions">
+        <Button variant="primary" href={CV_URL} download>Download my CV</Button>
+        <Button variant="ghost" href={`mailto:${EMAIL}`}>Get in touch →</Button>
+    </div>
+</Layout>
+
+<style>
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 48px;
+    }
+</style>

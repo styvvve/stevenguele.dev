@@ -1,57 +1,70 @@
 ---
-const year = new Date().getFullYear(); 
-import { CV_URL, LINKEDIN_URL, GITHUB_URL } from "../data/site";
+import { AUTHOR, GITHUB_URL, LINKEDIN_URL } from "../data/site";
+
+const year = new Date().getFullYear();
 
 const links = [
-    { href: GITHUB_URL, label: "Github" }, 
-    { href: LINKEDIN_URL, label: "LinkedIn"}, 
-    { href: "/", label: "rss"},
-]
+    { href: GITHUB_URL, label: "Github", external: true },
+    { href: LINKEDIN_URL, label: "LinkedIn", external: true },
+    { href: "/rss.xml", label: "rss", external: false },
+];
 ---
 
 <footer>
     <div class="container">
-        <p>
-            © {year} Steve Nguele • built with Astro 
-        </p>
+        <p>© {year} {AUTHOR} • built with Astro</p>
         <div class="social-links">
             {links.map((link, index) => (
-            <>
-            <a href={link.href} target="_blank" rel="noopener">
-                {link.label}
-            </a>
-            {index < links.length - 1 && <span> • </span>}
-            </>
-        ))}
+                <>
+                    <a
+                        href={link.href}
+                        target={link.external ? "_blank" : undefined}
+                        rel={link.external ? "noopener" : undefined}
+                    >
+                        {link.label}
+                    </a>
+                    {index < links.length - 1 && <span aria-hidden="true"> • </span>}
+                </>
+            ))}
         </div>
     </div>
 </footer>
 
 <style>
     footer {
-        border-top: 1px solid var(--border); 
+        border-top: 1px solid var(--border);
         font-family: var(--font-jetbrains-mono);
-        font-size: 0.8rem; 
-        color: var(--dim); 
+        font-size: 0.8rem;
+        color: var(--dim);
     }
 
     .container {
-        min-height: 3.25rem; 
-        display: flex; 
+        min-height: 3.25rem;
+        display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 8px 24px;
+        flex-wrap: wrap;
     }
 
     a {
         text-decoration: none;
-        color: var(--muted); 
+        color: var(--muted);
     }
 
     a:hover {
-        color: var(--text); 
+        color: var(--text);
     }
 
     p {
-        margin: 0; 
+        margin: 0;
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            flex-direction: column;
+            align-items: flex-start;
+            padding-block: 20px;
+        }
     }
 </style>

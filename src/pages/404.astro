@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Button from '../components/Button.astro';
+import { SITE_NAME } from '../data/site';
+---
+
+<Layout title={`Page not found • ${SITE_NAME}`} description="This page does not exist.">
+    <div class="container">
+        <PageHeader eyebrow="~/404" title="Page not found">
+            This page doesn't exist, or it has moved.
+        </PageHeader>
+
+        <div class="actions">
+            <Button variant="primary" href="/">Back to home</Button>
+            <Button variant="ghost" href="/blog">Read the blog →</Button>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 32px;
+    }
+</style>

@@ -1,0 +1,345 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Base.astro';
+import KindLabel from '../../components/KindLabel.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
+import { getPosts } from '../../utils/posts';
+import { readingTime } from '../../utils/readingTime';
+import { SITE_NAME } from '../../data/site';
+import 'katex/dist/katex.min.css';
+
+// One page per post, generated at build time
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+interface Props { post: CollectionEntry<'blog'>; }
+const { post } = Astro.props;
+const { title, description, date, kind, category, tags, summary } = post.data;
+
+const { Content, headings } = await render(post);
+
+// Table of contents: "##" headings only, minus the hidden footnotes title
+const toc = headings.filter((h) => h.depth === 2 && h.slug !== 'footnote-label');
+
+const longDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<Layout title={`${title} • ${SITE_NAME}`} description={description}>
+  <div class="container article-layout">
+    <article>
+      <header class="article-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/blog">← blog</a>
+          {category && <><span aria-hidden="true">/</span><span>{category}</span></>}
+        </nav>
+
+        <h1>{title}</h1>
+
+        <div class="meta">
+          <KindLabel kind={kind} />
+          <time datetime={date.toISOString()}>{longDate}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime(post.body)} min read</span>
+          {tags.length > 0 && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{tags.map((t) => `#${t}`).join(' ')}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      {summary && (
+        <aside class="summary" aria-label="Summary">
+          <p class="summary-label">Summary</p>
+          <p>{summary}</p>
+        </aside>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <AuthorCard />
+    </article>
+
+    {toc.length > 0 && (
+      <aside class="toc" aria-label="Table of contents">
+        <p class="toc-label">Contents</p>
+        <ol>
+          {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+        </ol>
+      </aside>
+    )}
+  </div>
+</Layout>
+
+<script>
+  // Highlight the section currently being read in the table of contents
+  const links = document.querySelectorAll<HTMLAnchorElement>('.toc a');
+
+  if (links.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((link) => {
+          if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '0px 0px -70% 0px' });
+
+    document.querySelectorAll('.prose h2[id]').forEach((h) => observer.observe(h));
+  }
+</script>
+
+<style>
+  /* ---------- Layout: article + table of contents ---------- */
+  .article-layout {
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: minmax(0, 700px) 240px;
+    justify-content: space-between;
+    gap: 56px;
+    padding-top: 64px;
+  }
+
+  /* ---------- Header ---------- */
+  .article-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 8px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--text);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 40px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -1px;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+
+  /* ---------- Summary box ---------- */
+  .summary {
+    margin-bottom: 28px;
+    padding: 18px 22px;
+    background: rgb(232 163 61 / .07);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .summary p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .summary .summary-label {
+    margin-bottom: 8px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- Markdown content (needs :global, it is not part of this template) ---------- */
+  .prose :global(h2) {
+    margin: 40px 0 16px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    scroll-margin-top: 24px;
+  }
+
+  .prose :global(h3) {
+    margin: 32px 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    scroll-margin-top: 24px;
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 20px;
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: var(--body);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 20px;
+  }
+
+  .prose :global(a) {
+    color: var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(strong) {
+    color: var(--text);
+  }
+
+  .prose :global(blockquote) {
+    margin: 0 0 20px;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+    color: var(--muted);
+  }
+
+  .prose :global(code:not(pre code)) {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    font-family: var(--font-jetbrains-mono);
+    font-size: .88em;
+  }
+
+  .prose :global(.expressive-code) {
+    margin-bottom: 24px;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  /* Math blocks ($$ ... $$) */
+  .prose :global(.katex-display) {
+    margin: 0 0 24px;
+    padding: 20px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+    font-size: 1.15em;
+  }
+
+  /* Footnotes → "References" */
+  .prose :global(.footnotes) {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .prose :global(.footnotes)::before {
+    content: "References";
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .prose :global(.footnotes ol),
+  .prose :global(.footnotes p) {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ---------- Table of contents ---------- */
+  .toc {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    margin-top: 120px;
+  }
+
+  .toc-label {
+    margin: 0 0 12px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc a {
+    display: block;
+    padding: 6px 0 6px 12px;
+    border-left: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+  }
+
+  .toc a[aria-current="true"] {
+    padding-left: 11px;
+    border-left: 2px solid var(--accent);
+    color: var(--text);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .article-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .article-layout {
+      padding-top: 40px;
+    }
+
+    .prose :global(p),
+    .prose :global(ul),
+    .prose :global(ol) {
+      font-size: 16px;
+    }
+  }
+</style>

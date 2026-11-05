@@ -1,62 +1,13 @@
 ---
+import FactList from './FactList.astro';
+
 const facts = [
-    { label: "Schedule", value: "2 wks school / 6 wks company" }, 
-    { label: "Location", value: "Bordeaux • open to relocating in France"}, 
-    { label: "Open to", value: "Apprenticeship • 4-6 month internships" },
-]; 
+    { label: "Schedule", value: "2 wks school / 6 wks company" },
+    { label: "Location", value: "Bordeaux • open to relocating in France" },
+    { label: "Open to", value: "Apprenticeship • 4–6 month internships" },
+];
 ---
 
-<section class="container">
-    <dl class="facts">
-        {facts.map((fact) => (
-            <div class="fact">
-                <dt>{fact.label}</dt>
-                <dt>{fact.value}</dt>
-            </div>
-        ))
-        }
-    </dl>
+<section class="container" aria-label="Key facts">
+    <FactList items={facts} />
 </section>
-
-<style>
-    .facts {
-        display: flex; 
-        margin: 0; 
-        background: var(--surface); 
-        border: 1px solid var(--border); 
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    .fact {
-        flex: 1; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 6px; 
-        padding: 18px 20px; 
-    }
-
-    .fact + .fact {
-        border-left: 1px solid var(--border);
-    }
-
-    dt {
-        font-family: var(--font-jetbrains-mono); 
-        font-size: 11.5px; 
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--text); 
-    }
-
-    dd {
-        margin: 0; 
-        font-size: 15px; 
-        font-weight: 500; 
-        color: var(--text); 
-    }
-
-    @media (max-width: 640px) {
-        .facts { flex-direction: column; }
-        .fact + .fact { border-left: none; border-top: 1px solid var(--border); }
-    }
-</style>

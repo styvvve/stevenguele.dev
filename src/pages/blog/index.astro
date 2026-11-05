@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Base.astro';
+import PostItem from '../../components/PostItem.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { getPosts } from '../../utils/posts';
+import { SITE_NAME } from '../../data/site';
+
+const posts = await getPosts();
+
+const byYear = Map.groupBy(posts, (post) => post.data.date.getFullYear());
+---
+
+<Layout title={`Blog • ${SITE_NAME}`} description="Build notes, lessons learned and in-depth articles on distributed systems, backend and AI.">
+  <div class="container">
+    <PageHeader title="Blog">
+      Build notes, lessons learned and in-depth articles on distributed systems, backend and AI.
+    </PageHeader>
+
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by type">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="note" aria-pressed="false">note</button>
+        <button type="button" data-filter="article" aria-pressed="false">article</button>
+        <button type="button" data-filter="paper" aria-pressed="false">paper</button>
+      </div>
+
+      <label class="search">
+        <span class="sr-only">Search posts</span>
+        <span aria-hidden="true">⌕</span>
+        <input id="search" type="search" placeholder="Search…" />
+      </label>
+    </div>
+
+    {[...byYear].map(([year, yearPosts]) => (
+      <section class="year-group">
+        <h2 class="year">{year}</h2>
+        <ul class="posts">
+          {yearPosts.map((post) => <PostItem post={post} />)}
+        </ul>
+      </section>
+    ))}
+
+    <p class="empty" hidden>No posts match your search.</p>
+  </div>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const input = document.querySelector<HTMLInputElement>('#search')!;
+  const items = document.querySelectorAll<HTMLElement>('.post');
+  const groups = document.querySelectorAll<HTMLElement>('.year-group');
+  const empty = document.querySelector<HTMLElement>('.empty')!;
+
+  let activeKind = 'all';
+
+  function apply() {
+    const query = input.value.trim().toLowerCase();
+
+    items.forEach((item) => {
+      const kindOk = activeKind === 'all' || item.dataset.kind === activeKind;
+      const textOk = item.dataset.search!.includes(query);
+      item.hidden = !(kindOk && textOk);
+    });
+
+    groups.forEach((group) => {
+      group.hidden = !group.querySelector('.post:not([hidden])');
+    });
+
+    empty.hidden = [...items].some((item) => !item.hidden);
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeKind = button.dataset.filter!;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+      apply();
+    });
+  });
+
+  input.addEventListener('input', apply);
+</script>
+
+<style>
+  /* ---------- Barre d'outils ---------- */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 64px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filters button {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-jetbrains-mono);
+    font-size: 13px;
+    cursor: pointer;
+    transition: color .15s, background-color .15s, border-color .15s;
+  }
+
+  .filters button:hover {
+    color: var(--text);
+  }
+
+  .filters button[aria-pressed="true"] {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  .filters button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Recherche ---------- */
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 220px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--dim);
+    font-family: var(--font-jetbrains-mono);
+    font-size: 12.5px;
+    transition: border-color .15s;
+  }
+
+  .search:focus-within {
+    border-color: var(--muted);
+  }
+
+  .search input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    color: var(--text);
+    font: inherit;
+  }
+
+  .search input::placeholder {
+    color: var(--dim);
+  }
+
+  /* ---------- Groupes par année ---------- */
+  .year-group {
+    margin-top: 56px;
+  }
+
+  .year {
+    margin: 0 0 8px;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .posts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .empty {
+    margin: 56px 0 0;
+    color: var(--muted);
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 640px) {
+    .toolbar {
+      margin-top: 40px;
+    }
+
+    .search {
+      width: 100%;
+    }
+
+    .year-group {
+      margin-top: 40px;
+    }
+  }
+</style>
+

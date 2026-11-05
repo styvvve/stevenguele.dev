@@ -1,0 +1,11 @@
+---
+import Badge from './Badge.astro';
+import Tag from './Tag.astro';
+
+interface Props { kind: 'article' | 'paper' | 'note'; }
+const { kind } = Astro.props;
+---
+
+{kind === 'article' && <Badge variant="blue">article</Badge>}
+{kind === 'paper' && <Badge>paper</Badge>}
+{kind === 'note' && <Tag>note</Tag>}

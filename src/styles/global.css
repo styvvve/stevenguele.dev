@@ -72,3 +72,27 @@ main {
     flex: 1; 
     padding-bottom: 64px; 
 }
+
+[hidden] { display: none !important; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Smooth scrolling for in-page links (table of contents), unless reduced motion is requested */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Visible focus ring for keyboard users everywhere */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

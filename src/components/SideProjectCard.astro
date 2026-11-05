@@ -1,0 +1,75 @@
+---
+import Tag from './Tag.astro';
+import type { SideProject } from '../data/projects';
+
+interface Props extends SideProject {}
+
+const { title, meta, description, tags, href } = Astro.props;
+
+// The whole card becomes a link only when the project has one
+const Wrapper = href ? 'a' : 'div';
+---
+
+<article class="card">
+    <Wrapper class="inner" href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener' : undefined}>
+        <h3>{title}</h3>
+        <p class="meta">{meta}</p>
+        <p class="description">{description}</p>
+        <div class="tags">
+            {tags.map((t) => <Tag>{t}</Tag>)}
+        </div>
+    </Wrapper>
+</article>
+
+<style>
+    .card {
+        height: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: border-color .15s;
+    }
+
+    .card:has(a:hover) {
+        border-color: var(--muted);
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        color: inherit;
+        text-decoration: none;
+        border-radius: inherit;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .meta {
+        margin: 6px 0 0;
+        font-family: var(--font-jetbrains-mono);
+        font-size: 11.5px;
+        color: var(--dim);
+    }
+
+    .description {
+        margin: 12px 0 0;
+        font-size: 14px;
+        line-height: 1.55;
+        color: var(--muted);
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: auto;
+        padding-top: 14px;
+    }
+</style>

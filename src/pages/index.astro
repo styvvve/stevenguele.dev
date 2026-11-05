@@ -7,9 +7,10 @@ import LatestPosts from '../components/LatestPosts.astro';
 import Background from '../components/Background.astro'
 import Stack from '../components/Stack.astro'; 
 import Contact from '../components/Contact.astro'; 
+import { SITE_NAME } from '../data/site';
 ---
 
-<Layout title="Steve Nguele • stevenguele.dev" description='Steve Nguele, MSc student at Epitech. I learn about AI and data. I am looking for 24-month apprenticeship of 24 months in AI, data and full stack development. (Java, Spring Boot, Python, C/C++)'>
+<Layout title={`Steve Nguele • ${SITE_NAME}`}>
 	<Hero />
 	<Facts />
 	<Projects />

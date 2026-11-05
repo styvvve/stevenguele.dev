@@ -1,0 +1,49 @@
+---
+import { AUTHOR } from '../data/site';
+---
+
+<aside class="author" aria-label="About the author">
+    <span class="avatar" aria-hidden="true">{AUTHOR.charAt(0)}</span>
+    <div>
+        <p class="name">{AUTHOR}</p>
+        <p class="bio">MSc in AI · Epitech Bordeaux · looking for an apprenticeship</p>
+    </div>
+</aside>
+
+<style>
+    .author {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 24px;
+        padding: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+
+    .avatar {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        color: var(--accent);
+        font-family: var(--font-jetbrains-mono);
+    }
+
+    .name {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .bio {
+        margin: 2px 0 0;
+        font-size: 14px;
+        color: var(--muted);
+    }
+</style>

@@ -1,0 +1,57 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+    groups: { name: string; items: string[] }[];
+}
+
+const { groups } = Astro.props;
+---
+
+<div class="skills">
+    {groups.map((group) => (
+        <div class="group">
+            <h3>{group.name}</h3>
+            <ul class="tags">
+                {group.items.map((item) => <li><Tag>{item}</Tag></li>)}
+            </ul>
+        </div>
+    ))}
+</div>
+
+<style>
+    .skills {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        padding: 24px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+
+    h3 {
+        margin: 0 0 10px;
+        font-family: var(--font-jetbrains-mono);
+        font-size: 11.5px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text);
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    @media (max-width: 640px) {
+        .skills {
+            padding: 20px;
+        }
+    }
+</style>

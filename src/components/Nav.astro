@@ -1,52 +1,87 @@
 ---
-import Button from './Button.astro'; 
+import Button from './Button.astro';
 import { CV_URL } from '../data/site';
 
-const currentPath = Astro.url.pathname; 
+const currentPath = Astro.url.pathname;
 
 const links = [
-    { href: "/", label: "Home" }, 
-    { href: "/projects", label: "Projects"}, 
-    { href: "/blog", label: "Blog" }, 
+    { href: "/", label: "Home" },
+    { href: "/projects", label: "Projects" },
+    { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
-]; 
+];
+
+// "/" must match exactly, otherwise Home would be active everywhere.
+// Other links also match their sub-pages (e.g. /blog/my-post → Blog).
+const isActive = (href: string) =>
+    href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 ---
 
 <header>
-    <div class="container">
-            <a href="/" class="logo">stevenguele<span class="some">.dev</span></a>
-         <nav>
+    <div class="container bar">
+        <a href="/" class="logo">stevenguele<span class="some">.dev</span></a>
+
+        <button
+            type="button"
+            class="menu-toggle"
+            aria-expanded="false"
+            aria-controls="site-menu"
+        >
+            <span class="sr-only">Menu</span>
+            <span class="burger" aria-hidden="true"></span>
+        </button>
+
+        <nav id="site-menu" aria-label="Main">
             {links.map((link) => (
-                <a 
-                    href={link.href}
-                    aria-current={currentPath === link.href ? "page" : undefined}
-                    >
-                        {link.label}
-                    </a>
+                <a href={link.href} aria-current={isActive(link.href) ? "page" : undefined}>
+                    {link.label}
+                </a>
             ))}
             <Button variant="ghost" href={CV_URL} download>CV ↓</Button>
         </nav>
     </div>
 </header>
 
-<style>
+<script>
+    const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle')!;
+    const header = document.querySelector<HTMLElement>('header')!;
 
+    const setOpen = (open: boolean) => {
+        toggle.setAttribute('aria-expanded', String(open));
+        header.classList.toggle('open', open);
+    };
+
+    toggle.addEventListener('click', () => {
+        setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Escape closes the menu and gives focus back to the button
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && header.classList.contains('open')) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
+</script>
+
+<style>
     header {
-        border-bottom: 1px solid var(--border); 
+        border-bottom: 1px solid var(--border);
     }
 
-    .container {
-        min-height: 3.25rem; 
-        display: flex; 
+    .bar {
+        min-height: 3.25rem;
+        display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .logo {
         font-family: var(--font-jetbrains-mono);
         font-weight: bold;
-        font-size: 1.1rem; 
-        color: var(--text); 
+        font-size: 1.1rem;
+        color: var(--text);
     }
 
     a {
@@ -55,26 +90,100 @@ const links = [
     }
 
     .some {
-        color: var(--accent); 
+        color: var(--accent);
     }
 
     nav {
-        display: flex; 
+        display: flex;
         align-items: center;
-        gap: 1.5rem; 
+        gap: 1.5rem;
     }
 
     nav a {
-        color: var(--muted); 
+        color: var(--muted);
+        transition: color .15s;
     }
 
-    nav a:hover {
-        color: var(--text); 
-    }
-
+    nav a:hover,
     nav a[aria-current="page"] {
-        color: var(--text); 
+        color: var(--text);
     }
 
+    /* ---------- Mobile menu ---------- */
+    .menu-toggle {
+        display: none;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        place-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+    }
 
+    /* Three lines drawn with one span + its two pseudo-elements */
+    .burger,
+    .burger::before,
+    .burger::after {
+        display: block;
+        width: 16px;
+        height: 1.5px;
+        background: var(--text);
+        border-radius: 1px;
+        transition: transform .2s, opacity .2s;
+    }
+
+    .burger {
+        position: relative;
+    }
+
+    .burger::before,
+    .burger::after {
+        content: "";
+        position: absolute;
+        left: 0;
+    }
+
+    .burger::before { top: -5px; }
+    .burger::after  { top: 5px; }
+
+    /* Lines turn into an X when open */
+    .open .burger { background: transparent; }
+    .open .burger::before { transform: translateY(5px) rotate(45deg); }
+    .open .burger::after  { transform: translateY(-5px) rotate(-45deg); }
+
+    @media (max-width: 640px) {
+        .bar {
+            min-height: 60px;
+        }
+
+        .menu-toggle {
+            display: grid;
+        }
+
+        nav {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            padding-bottom: 16px;
+        }
+
+        .open nav {
+            display: flex;
+        }
+
+        nav a:not(.button) {
+            padding: 14px 0;
+            border-top: 1px solid var(--border);
+            font-size: 15px;
+        }
+
+        nav :global(.button) {
+            margin-top: 12px;
+            text-align: center;
+        }
+    }
 </style>
