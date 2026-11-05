@@ -1,0 +1,88 @@
+---
+import Section from './Section.astro';
+
+const steps = [
+  {
+    period: "2026 — 2028",
+    title: "Specialized Master's in Artificial Intelligence",
+    place: "Epitech Bordeaux",
+  },
+  {
+    period: "2023 — 2026",
+    title: "Bachelor's in Computer Science",
+    place: "Université de Pau et des Pays de l'Adour · systems, networks, distributed computing, formal languages",
+  },
+];
+---
+
+<Section num={3} title="Background">
+  <ol class="timeline">
+    {steps.map((step) => (
+      <li class="step">
+        <span class="period">{step.period}</span>
+        <h3>{step.title}</h3>
+        <p>{step.place}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<style>
+    .period {
+        font-family: var(--font-jetbrains-mono); 
+        font-size: 12px;
+        color: var(--dim); 
+    }
+
+    h3 {
+        margin: 0; 
+        font-size: 15.5px; 
+        font-weight: 500; 
+    }
+
+    p {
+        margin: 0; 
+        font-size: 14px; 
+        color: var(--muted); 
+    }
+    .timeline {
+        position: relative;
+        display: flex; 
+        flex-direction: column;
+        gap: 26px; 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+    }
+
+    .timeline::before {
+        content: ""; 
+        position: absolute; 
+        left: 4px; 
+        top: 12px; 
+        bottom: 12px; 
+        width: 1px; 
+        background: var(--border);
+    }
+
+    .step {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding-left: 28px;
+    }
+
+    .step::before {
+        content: ""; 
+        position: absolute;
+        left: 0; 
+        top: 5px; 
+        width: 9px; 
+        height: 9px; 
+        box-sizing: border-box; 
+        border: 2px solid var(--accent); 
+        border-radius: 50%; 
+        background: var(--bg); 
+    }
+</style>

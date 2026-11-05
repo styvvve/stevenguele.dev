@@ -70,4 +70,5 @@ body.has-pointer::after { opacity: 1; }
 
 main {
     flex: 1; 
+    padding-bottom: 64px; 
 }

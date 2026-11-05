@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro'; 
+import { CV_URL, GITHUB_URL, LINKEDIN_URL, EMAIL } from '../data/site';
 ---
 
 <section class="hero container">
@@ -18,14 +19,14 @@ import Button from './Button.astro';
     </p>
 
     <div class="actions">
-        <Button variant="primary" href="/cv_steve_NGUELE_web.pdf" download>Download my CV</Button>
-        <Button variant="ghost" href="mailto:steve.nguele@epitech.eu">Get in touch →</Button>
+        <Button variant="primary" href={CV_URL} download>Download my CV</Button>
+        <Button variant="ghost" href={`mailto:${EMAIL}`}>Get in touch →</Button>
     </div>
 
     <ul class="socials"> 
-        <li><a href="https://github.com/styvvve" target="_blank" rel="noopener">github</a></li>
-        <li><a href="https://www.linkedin.com/in/steve-nguele" target="_blank" rel="noopener">linkedin</a></li>
-        <li><a href="mailto:steve.nguele@epitech.eu">email</a></li>
+        <li><a href={GITHUB_URL} target="_blank" rel="noopener">github</a></li>
+        <li><a href={LINKEDIN_URL} target="_blank" rel="noopener">linkedin</a></li>
+        <li><a href={`mailto:${EMAIL}`}>email</a></li>
     </ul>
 </section>
 

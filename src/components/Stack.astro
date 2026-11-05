@@ -1,0 +1,59 @@
+---
+import Section from './Section.astro';
+import Tag from './Tag.astro';
+
+const groups = [
+  { name: "Backend",     items: ["Java", "Spring Boot", "Node.js", "Express.js", "Maven", "REST"] },
+  { name: "Data & AI",   items: ["Python", "pandas", "Matplotlib", "LLM agents", "Claude code"] },
+  { name: "Systems",     items: ["C/C++", "sockets", "pthreads", "TCP/UDP"] },
+  { name: "Databases",   items: ["Oracle", "SQL", "PL/SQL"] },
+];
+---
+
+<Section num={4} title="Stack">
+  <div class="grid">
+    {groups.map((group) => (
+      <div class="group">
+        <h3>{group.name}</h3>
+        <div class="tags">
+          {group.items.map((item) => <Tag>{item}</Tag>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; 
+        padding: 16px 18px; 
+        border: 1px solid var(--border); 
+        border-radius: 12px;
+    }
+
+    h3 {
+        margin: 0; 
+        font-family: var(--font-jetbrains-mono);
+        font-size: 11.5px; 
+        font-weight: 400; 
+        letter-spacing: 1px; 
+        text-transform: uppercase;
+        color: var(--dim); 
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+</style>

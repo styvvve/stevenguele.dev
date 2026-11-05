@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+import Section from './Section.astro'; 
+import Badge from './Badge.astro'; 
+import Tag from './Tag.astro'; 
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .slice(0, 3); 
+---
+
+<Section num={2} title="Latest posts" href="/blog" linkLabel="Blog →">
+  <ul class="posts">
+    {posts.map((post) => (
+      <li>
+        <a class="post" href={`/blog/${post.id}`}>
+          <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0, 10)}</time>
+          <span class="title">{post.data.title}</span>
+          {post.data.kind === 'article' && <Badge variant="blue">article</Badge>}
+          {post.data.kind === 'paper' && <Badge>paper</Badge>}
+          {post.data.kind === 'note' && <Tag>note</Tag>}
+        </a>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<style>
+    .posts {
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+        border-top: 1px solid var(--border); 
+    }
+
+    li {
+        border-bottom: 1px solid var(--border); 
+    }
+
+    .post {
+        display: grid; 
+        grid-template-columns: 92px 1fr auto;
+        align-items: center;
+        gap: 24px; 
+        padding: 16px 0;
+        text-decoration: none;  
+    }
+
+    time {
+        font-family: var(--font-jetbrains-mono);
+        font-size: 12.5px; 
+        color: var(--dim); 
+    }
+
+    .title {
+        font-size: 15.5px; 
+        font-weight: 500; 
+        color: var(--text); 
+    }
+
+    .post:hover .title {
+        color: var(--accent); 
+    }
+
+    @media (max-width: 640px) {
+        .post { grid-template-columns: 1fr auto; gap: 8px 12px; }
+        .title { grid-column: 1 / -1; grid-row: 2; }
+    }
+
+</style>

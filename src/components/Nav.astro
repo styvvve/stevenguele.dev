@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro'; 
+import { CV_URL } from '../data/site';
 
 const currentPath = Astro.url.pathname; 
 
@@ -23,7 +24,7 @@ const links = [
                         {link.label}
                     </a>
             ))}
-            <Button variant="ghost" href="/cv_steve_NGUELE_web.pdf" download>CV ↓</Button>
+            <Button variant="ghost" href={CV_URL} download>CV ↓</Button>
         </nav>
     </div>
 </header>

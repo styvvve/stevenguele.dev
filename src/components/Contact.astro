@@ -1,0 +1,66 @@
+---
+import Button from './Button.astro';
+import { CV_URL, EMAIL } from '../data/site';
+---
+
+<section class="container contact-section" aria-labelledby="contact-title">
+  <div class="card">
+    <div class="text">
+      <h2 id="contact-title">Hiring an apprentice?</h2>
+      <p>I reply within 24 hours. Epitech apprenticeship calendar available on request.</p>
+    </div>
+    <div class="actions">
+      <Button variant="ghost" href={CV_URL} download>CV ↓</Button>
+      <Button variant="primary" href={`mailto:${EMAIL}`}>Email me</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+    .contact-section {
+        padding-top: 72px;
+    }
+
+    .card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px; 
+        padding: 32px; 
+        background: var(--surface);
+        border: 1px solid var(--border); 
+        border-radius: 16px;
+    }
+
+    .text {
+        display: flex; 
+        flex-direction: column;
+        gap: 6px; 
+    }
+
+    h2 {
+        margin: 0; 
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0; 
+        font-size: 14.5px; 
+        color: var(--muted); 
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px; 
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+        .card {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 24px;
+        }
+    }
+</style>
