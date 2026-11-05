@@ -1,0 +1,24 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface Props {
+    num: number; 
+    title: string; 
+    href?: string; 
+    linkLabel?: string;
+}
+---
+
+<section class="section container">
+    <SectionHeader {...Astro.props} />
+    <slot />
+</section>
+
+<style>
+    .section {
+        display: flex; 
+        flex-direction: column;
+        gap: 24px; 
+        padding-top: 72px; 
+    }
+</style>

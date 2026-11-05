@@ -1,24 +1,16 @@
 ---
-import SectionHeader from "./SectionHeader.astro";
 import ProjectCard  from "./ProjectCard.astro";
+import Section from "./Section.astro";
 import { projects } from "../data/projects"; 
 ---
 
-<section class="projects container">
-  <SectionHeader num={1} title="Projects" href="/projects" linkLabel="All projects →" />
+<Section num={1} title="Projects" href="/projects" linkLabel="All projects →">
   <ul class="list">
-    {projects.map((p) => <li><ProjectCard {...p} /></li>)}
+      {projects.map((p) => <li><ProjectCard {...p} /></li>)}
   </ul>
-</section>
+</Section>
 
 <style>
-    .projects {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        padding-top: 72px;
-    }
-
     .list { 
         display: flex;
         flex-direction: column;
