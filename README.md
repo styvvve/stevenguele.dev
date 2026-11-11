@@ -31,10 +31,3 @@ src/
   pages/             index.astro
   styles/global.css
 ```
-
-## À faire
-
-- Page d'accueil
-- Pages Projets et À propos
-- Blog
-- Déploiement
